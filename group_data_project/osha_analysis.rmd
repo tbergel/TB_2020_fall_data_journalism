@@ -1,0 +1,39 @@
+---
+title: "osha_analysis"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Load libraries
+```{r setup, echo=FALSE, message=FALSE}
+library(tidyverse)
+library(lubridate)
+```
+
+##Load Data
+```{r}
+osha_analysis_data <- read_csv("../data/osha_inspections.csv")
+
+glimpse(osha_analysis_data)
+
+```
+
+Knowles’ accident was one of 3,203 that led to a death or “catastrophe” — defined by the U.S. Department of Labor as hospitalizations of three or more workers — and triggered an investigation by safety inspectors at the U.S. Occupational Safety and Health Administration during the first three and a half years of Donald Trump’s presidency, according to the agency’s enforcement data.
+
+```{r}
+#total_inspections_trump <- osha_analysis_data %>%
+  #filter(open_date >= "2017-01-20") %>%
+  #filter(open_date <= "2020-01-20")
+
+trump_inspections <- osha_analysis_data %>%
+  filter(safety_hlth == safety,
+           open_date >= "2017-01-20",
+         open_date < "2020-01-20",
+         insp_scope != "D") # no non-inspections
+count(trump_inspections)
+
+```
+
