@@ -15,25 +15,52 @@ library(lubridate)
 
 ##Load Data
 ```{r}
-osha_analysis_data <- read_csv("../data/osha_inspections.csv")
+osha_analysis_data <- read_csv("data/osha_inspections.csv")
 
 glimpse(osha_analysis_data)
 
 ```
 
-Knowles’ accident was one of 3,203 that led to a death or “catastrophe” — defined by the U.S. Department of Labor as hospitalizations of three or more workers — and triggered an investigation by safety inspectors at the U.S. Occupational Safety and Health Administration during the first three and a half years of Donald Trump’s presidency, according to the agency’s enforcement data.
+3) The agency has conducted slightly fewer safety inspections during the first three years of Trump’s presidency than during a comparable period at the end of President Barack Obama’s second term, even though the labor force grew by 16 percent, according to a Center for Public Integrity analysis of the agency’s inspection data.
 
 ```{r}
-#total_inspections_trump <- osha_analysis_data %>%
-  #filter(open_date >= "2017-01-20") %>%
-  #filter(open_date <= "2020-01-20")
+trump_begin_date <- "2017-01-20"
+trump_end_date <- "2020-01-20"
 
-trump_inspections <- osha_analysis_data %>%
-  filter(safety_hlth == safety,
-           open_date >= "2017-01-20",
-         open_date < "2020-01-20",
-         insp_scope != "D") # no non-inspections
+trump_inspections <- osha_inspections %>%
+  filter(safety_hlth == "S") %>%
+ filter(open_date >= trump_begin_date,
+        open_date < trump_end_date)
+       # insp_scope != "D") # no non-inspections
+
 count(trump_inspections)
+  
+#Q: How many safety inspections were conducted in the first three years of Trump's presidency?
+#A:88354
 
+#Question for Sean: What does line 49 do, becuase that's changing my outcome.
+```
+
+```{r}
+obama_begin_date <- "2014-01-20"
+obama_end_date <- "2017-01-20"
+
+obama_inspections_2t <- osha_inspections %>%
+  filter(safety_hlth == "S") %>%
+ filter(open_date >= obama_begin_date,
+        open_date < obama_end_date)
+       # insp_scope != "D") # no non-inspections
+
+count(obama_inspections_2t)
+
+#Q: How many safety inspections were conducted in the last three years of Obama's second term?
+#A:93992
+```
+
+```{r}
+(count(obama_inspections_2t)) - (count(trump_inspections))
+
+#Q: What's the difference in inspections between Trump and Obama?
+#A:5638. OSHA conducted 5638 more safety inspections during the last three years of Obama's second term than in the first three years of Trump's presidency. A slightly larger amount.
 ```
 
