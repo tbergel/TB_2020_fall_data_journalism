@@ -11,56 +11,90 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r setup, echo=FALSE, message=FALSE}
 library(tidyverse)
 library(lubridate)
+library(stringr)
 ```
 
 ##Load Data
 ```{r}
-osha_analysis_data <- read_csv("data/osha_inspections.csv")
+osha_analysis_data <- read_csv("../data/osha_inspections.csv")
 
 glimpse(osha_analysis_data)
 
 ```
 
-3) The agency has conducted slightly fewer safety inspections during the first three years of Trump’s presidency than during a comparable period at the end of President Barack Obama’s second term, even though the labor force grew by 16 percent, according to a Center for Public Integrity analysis of the agency’s inspection data.
+##Question 1:
+Knowles’ accident was one of 3,203 that led to a death or “catastrophe” — defined by the U.S. Department of Labor as hospitalizations of three or more workers — and triggered an investigation by safety inspectors at the U.S. Occupational Safety and Health Administration during the first three and a half years of Donald Trump’s presidency, according to the agency’s enforcement data.
 
 ```{r}
-trump_begin_date <- "2017-01-20"
-trump_end_date <- "2020-01-20"
+#The first step is to check whether there were 3203 accidents that took place during the first three and a half years of Trump's presidency. The next step is to see if Knowes' company was listed in the 3203 accidents.
 
-trump_inspections <- osha_inspections %>%
-  filter(safety_hlth == "S") %>%
- filter(open_date >= trump_begin_date,
-        open_date < trump_end_date)
-       # insp_scope != "D") # no non-inspections
+#According to ProPublica's repo, the "M" in insp_type refers to fatalities/ catastrophes 
+#And "S" in safety_hlth column refers to Safety inspections
 
+#PART 1: Total accidents
+#First, count the total numbers of safety inspections ("S"), and catastrophes ("M")
+catastrophe_inspections <- osha_analysis_data %>%
+  filter(safety_hlth == "S", insp_type == "M")
+count(catastrophe_inspections)
+
+#PART 2: Trump's presidency
+#Then, filter this to see how many took place in Trump's term in office -- first 3.5 years
+#According to ProPublica's repo: Trump took office on 2017-01-20, and the 3.5-year period ended on 2020-07-20.
+trump_inspections <- catastrophe_inspections %>%
+  filter(open_date >= "2017-01-20",
+         open_date < "2020-07-20")
 count(trump_inspections)
+
+#PART 3: KNOWLES' workplace
+knowles_workplace <- trump_inspections %>%
+  #filter, using str_detect, to look for a line in column "estab_name"
+  #regex ignores case senstive characters, library stringr installed
+  filter(str_detect(estab_name, regex("majestic marble", ignore_case = TRUE)))
+knowles_workplace
+
+```
+##Question 2:
+In 2019, OSHA’s safety inspectors conducted 962 investigations into fatal or catastrophic workplace incidents — the highest number since the agency began publishing the data in 2011.
+
+```{r}
+year_fatal_cat_insp <- osha_analysis_data %>%
+  filter(insp_type == "M", safety_hlth == "S") %>%
+  mutate(year = year(open_date)) %>%
+  group_by(year) %>%
+  select(year, insp_type) %>%
+  count(insp_type = "M")%>%
+  filter(year == "2019")
+
+year_fatal_cat_insp
   
-#Q: How many safety inspections were conducted in the first three years of Trump's presidency?
-#A:88354
-
-#Question for Sean: What does line 49 do, becuase that's changing my outcome.
 ```
+
+##Question 3:
+The agency has conducted slightly fewer safety inspections during the first three years of Trump’s presidency than during a comparable period at the end of President Barack Obama’s second term, even though the labor force grew by 16 percent, according to a Center for Public Integrity analysis of the agency’s inspection data.
+
 
 ```{r}
-obama_begin_date <- "2014-01-20"
-obama_end_date <- "2017-01-20"
+#Step 1: calculate number of SAFETY inspections conducted in 3 years of Trump's presidency
+#"S" in safety_hlth column refers to Safety inspections
+trump_inspections_three_years <- osha_analysis_data %>%
+  filter(safety_hlth == "S")%>%
+  filter(open_date >= "2017-01-20",
+         open_date < "2020-01-20",)
+count(trump_inspections_three_years)
 
-obama_inspections_2t <- osha_inspections %>%
-  filter(safety_hlth == "S") %>%
- filter(open_date >= obama_begin_date,
-        open_date < obama_end_date)
-       # insp_scope != "D") # no non-inspections
+#Answer: 88354	
 
-count(obama_inspections_2t)
+#Step 2: Obama 3 years
+obama_inspections_three_years <- osha_analysis_data %>%
+  filter(safety_hlth == "S")%>%
+  filter(open_date>="2014-01-20",
+         open_date < "2017-01-20")
+count(obama_inspections_three_years)
+#Answer: 93992
 
-#Q: How many safety inspections were conducted in the last three years of Obama's second term?
-#A:93992
+
 ```
 
-```{r}
-(count(obama_inspections_2t)) - (count(trump_inspections))
 
-#Q: What's the difference in inspections between Trump and Obama?
-#A:5638. OSHA conducted 5638 more safety inspections during the last three years of Obama's second term than in the first three years of Trump's presidency. A slightly larger amount.
-```
+
 
