@@ -24,6 +24,12 @@ glimpse(osha_analysis_data)
 3) The agency has conducted slightly fewer safety inspections during the first three years of Trump’s presidency than during a comparable period at the end of President Barack Obama’s second term, even though the labor force grew by 16 percent, according to a Center for Public Integrity analysis of the agency’s inspection data.
 
 ```{r}
+osha_analysis_data %>%
+  group_by(insp_scope, why_no_insp) %>%
+  count()
+```
+
+```{r}
 trump_begin_date <- "2017-01-20"
 trump_end_date <- "2020-01-20"
 
