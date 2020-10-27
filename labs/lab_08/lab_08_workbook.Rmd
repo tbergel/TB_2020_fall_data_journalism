@@ -98,7 +98,7 @@ glimpse(opioid_scrape)
 opioid_scrape
 
 # What flaws did you see?
-
+# I don't know if this is a flaw, but nothing is in order. The column names are pretty confusing. Also, this is supposed to be about the states, but there are 53 objects when there are only 50 states (51 if you MUST count D.C.)
 ```
 
 Now, I'll walk you through what I saw.  
@@ -172,7 +172,8 @@ Now, it's your turn to use rename() to fix the opioid prescription rate column, 
 ```{r}
 opioid_scrape_clean <- opioid_scrape %>%
   clean_names() %>%
-  rename(opioid_death_rate = opioid_involved_overdose_deaths_100_000_persons1_2018) 
+  rename(opioid_death_rate = opioid_involved_overdose_deaths_100_000_persons1_2018) %>%
+rename(opioid_prescription_rate = opioid_prescriptions_100_persons2_2018)
   # Add an additional rename() function here as instructed
 
 opioid_scrape_clean
