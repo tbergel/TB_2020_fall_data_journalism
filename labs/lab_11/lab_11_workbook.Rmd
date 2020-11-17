@@ -254,7 +254,7 @@ baltimore_city <- maryland %>%
 
 baltimore_city %>%
   ggplot(aes(month, case_rate)) +
-  geom_bar(stat="identity", fill="steelblue") +
+  geom_bar(stat="identity", fill="pink") +
   labs(
     x="Month",
     y="Cases per 1,000 people",
