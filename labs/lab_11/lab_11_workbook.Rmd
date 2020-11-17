@@ -248,7 +248,9 @@ Create a code block below, and create a bar chart showing the increase in case r
 ```{r}
 baltimore_city <- maryland %>%
   # needed help figuring out how to filter out by specific months
-  filter(county == "Baltimore city", month %in% c("May", "June", "July", "August"))
+  filter(county == "Baltimore city", month %in% c("May", "June", "July", "August")) %>%
+  mutate(month = as_factor(month)) %>%
+  mutate(month = ordered(month, levels = c("March", "April", "May", "June", "July", "August")))
 
 baltimore_city %>%
   ggplot(aes(month, case_rate)) +
@@ -256,7 +258,7 @@ baltimore_city %>%
   labs(
     x="Month",
     y="Cases per 1,000 people",
-    title="In Baltimore City, steady decrease in COVID cases",
+    title="In Baltimore City, steady increase in COVID cases",
     caption="Source: Analysis of New York Times COVID data"
   ) +
   geom_text(aes(label=round(case_rate,0)))
