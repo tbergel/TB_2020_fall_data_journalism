@@ -14,11 +14,63 @@ knitr::opts_chunk$set(echo = TRUE)
 # Load the tidyverse, vembedr
 library(tidyverse)
 library(vembedr)
+library(janitor)
 
 ```
 
 ## Load data
 
 ```{r}
-heritage <- read_csv("data/whose_heritage.csv") 
+heritage <- read_csv("data/whose_heritage.csv") %>%
+  clean_names()
 ```
+
+## Exploratory analysis
+
+``` {r}
+
+heritage %>%
+  group_by(honorees) %>%
+  count() %>%
+  arrange(desc(n))
+
+```
+
+``` {r}
+
+heritage %>%
+  group_by(state) %>%
+  count() %>%
+  arrange(desc(n))
+
+```
+
+``` {r}
+
+heritage %>%
+  group_by(symbol_type) %>%
+  count() %>%
+  arrange(desc(n))
+
+```
+
+``` {r}
+
+heritage %>%
+  group_by(year_removed) %>%
+  count() %>%
+  arrange(desc(n))
+
+```
+
+``` {r}
+
+heritage %>%
+  group_by(symbol_category, symbol_type, state) %>%
+  count() %>%
+  arrange(desc(n))
+
+```
+
+
+
