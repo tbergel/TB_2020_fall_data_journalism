@@ -1,0 +1,24 @@
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Load Packages
+
+```{r}
+# If you are on a new machine you haven't used before, you may need to install these packages before loading.  If that's the case, remove the comment # from in front of the next two lines before running the codeblock, to install the packages before loading.
+# install.packages('tidyverse')
+# install.packages('vembedr')
+
+# Load the tidyverse, vembedr
+library(tidyverse)
+library(vembedr)
+
+```
+
+## Load data
+
+```{r}
+heritage <- read_csv("data/whose_heritage.csv") 
+```
