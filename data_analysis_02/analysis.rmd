@@ -108,6 +108,6 @@ cali_monuments_down_af_floyd <- cali_monuments_down %>%
  
 cali_monuments_down_af_floyd
 
-# After Floyd: *1, in 2020. George Floyd was killed in 2020 and only one monument was removed/renamed in that year. Floyd was killed in the spring, so it's possible that this monument was taken down prior to his death, but given the large-scale removal of confederate monuments in the wake of his death, it's more likely that this monument was taken down in reaction to the tragedy and unrest that followed. 
+# After Floyd: *1, in 2020. George Floyd was killed in 2020 and only one monument was removed/renamed in that year. Floyd was killed in the spring, so it's possible that this monument was taken down prior to his death, but given the large-scale removal of confederate monuments in the wake of his death, it's more likely that this monument was taken down in reaction to the tragedy and the unrest that followed. 
 ```
 
