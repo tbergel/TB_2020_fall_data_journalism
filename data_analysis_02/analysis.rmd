@@ -15,6 +15,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(vembedr)
 library(janitor)
+library(lubridate)
 
 ```
 
@@ -72,5 +73,35 @@ heritage %>%
 
 ```
 
+2) How many monuments in Cali have come down? When were they taken down — before/after Floyd?
 
+```{r}
+# part 1: How many monuments in Cali have come down?
+cali_monuments_down <- heritage %>%
+  filter(state == "CA") %>%
+  filter(tracking_status %in% c("Removed", "Renamed"))
+ 
+cali_monuments_down
+
+# A: 6
+```
+
+```{r}
+# part 2: When were they taken down — before/after Floyd?
+cali_monuments_down_bf_floyd <- cali_monuments_down %>%
+  filter(year_removed < 2020,) %>%
+  arrange(desc(year_removed))
+ 
+cali_monuments_down_bf_floyd
+
+# Before Floyd: *5 (see answer below for reasoning behind "*")
+
+cali_monuments_down_af_floyd <- cali_monuments_down %>%
+  filter(year_removed >= 2020) %>%
+  arrange(desc(year_removed))
+ 
+cali_monuments_down_af_floyd
+
+# After Floyd: *1. George Floyd was killed in 2020 and only one monument was removed/renamed in that year. Floyd was killed in the spring, so it's possible that this monument was taken down prior to his death, but given the large-scale removal of confederate monuments in the wake of his death, it's more likely that this monument was taken down in reaction to the tragedy and unrest that followed. 
+```
 
