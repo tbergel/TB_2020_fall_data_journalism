@@ -288,3 +288,21 @@ heritage%>%
 #peak years of removals in all states are 2020 and 2017
 ```
 
+
+#Total number of monuments in Union, Confederate, boarder and N/A states
+
+```{r}
+
+heritage%>%
+  group_by(side)%>%
+  count()%>%
+  arrange(desc(n))
+
+#total number of monuments: Union (northern) states = 46, Confederate (southern) states = 1757, boarder states = 98, "not applicable" states = 39
+
+```
+
+
+
+
+
